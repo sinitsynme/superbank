@@ -1,0 +1,12 @@
+server:
+  port: 8111
+
+spring:
+  application:
+    name: superbank-api-gateway
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
