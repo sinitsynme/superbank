@@ -1,12 +1,40 @@
 server:
-  port: 8111
+  port: 8080
 
 spring:
   application:
     name: superbank-api-gateway
+
+  cloud:
+    gateway:
+      routes:
+        # USER SERVICE
+        - id: superbank-user-service
+          uri: lb://superbank-user-service
+          predicates:
+            - Path=/users/**
+          filters:
+            - StripPrefix=0
+
+        # TRANSFER SERVICE
+        - id: superbank-transfer-service
+          uri: lb://superbank-transfer-service
+          predicates:
+            - Path=/transfer/**
+          filters:
+            - StripPrefix=0
 
 eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka
 
+management:
+  endpoint:
+    gateway:
+      enabled: true
+
+  endpoints:
+    web:
+      exposure:
+        include: '*'
