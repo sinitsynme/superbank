@@ -1,6 +1,6 @@
 spring:
   application:
-    name: superbank-transfer-ervice
+    name: superbank-transfer-service
 
 server:
   port: 8082
