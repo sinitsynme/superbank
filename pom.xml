@@ -11,6 +11,7 @@
         <module>eureka-server</module>
         <module>user-service</module>
         <module>transfer-service</module>
+        <module>auth-server</module>
     </modules>
 
     <parent>
