@@ -1,0 +1,32 @@
+version: "3"
+
+services:
+  db:
+    image: postgres:15-bullseye
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: trust
+      POSTGRES_USER: adm
+      POSTGRES_PASSWORD: my_psw
+      POSTGRES_DB: keycloak_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - "C:/sb_kc_db:/var/lib/postgresql/data"
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    command: start-dev
+    environment:
+      KC_DB: postgres
+      KC_DB_URL_HOST: db
+      KC_DB_SCHEMA: public
+      KC_DB_URL_DATABASE: keycloak_db
+      KC_DB_USERNAME: adm
+      KC_DB_PASSWORD: my_psw
+      KEYCLOAK_ADMIN: keycloak_adm
+      KEYCLOAK_ADMIN_PASSWORD: keycloak_psw
+    ports:
+      - "8443:8080"
+    depends_on:
+      - db
+
