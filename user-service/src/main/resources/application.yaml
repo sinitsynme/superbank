@@ -2,6 +2,13 @@ spring:
   application:
     name: superbank-user-service
 
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8443/auth/realms/superbank
+
+
 server:
   port: 8081
 
