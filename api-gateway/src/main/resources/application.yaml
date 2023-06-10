@@ -7,22 +7,53 @@ spring:
 
   cloud:
     gateway:
+
+      default-filters:
+        - TokenRelay
+
       routes:
         # USER SERVICE
         - id: superbank-user-service
           uri: lb://superbank-user-service
           predicates:
-            - Path=/users/**
+            - Path=/users**/**
           filters:
             - StripPrefix=0
+
 
         # TRANSFER SERVICE
         - id: superbank-transfer-service
           uri: lb://superbank-transfer-service
           predicates:
-            - Path=/transfer/**
+            - Path=/transfer**/**
           filters:
             - StripPrefix=0
+
+
+
+  security:
+    oauth2: # OAuth2 settings
+      client:
+        registration:
+          superbank-gateway:
+            provider: superbank-kc
+            client-id: superbank-gateway-client
+            client-secret: rHPUyNrHJbBhxp4hGsq9e0J0aCpyhVZL
+            authorization-grant-type: authorization_code
+
+            redirect-uri: "http://localhost:8080/login/oauth2/code/superbank-gateway-client"
+            scope: openid
+
+        provider:
+          superbank-kc:
+            issuer-uri: http://localhost:8443/auth/realms/superbank
+#            authorization-uri: http://localhost:8443/realms/superbank/protocol/openid-connect/auth
+#            token-uri: http://localhost:8443/realms/superbank/protocol/openid-connect/token
+#            user-info-uri: http://localhost:8443/realms/superbank/protocol/openid-connect/userinfo
+#            jwk-set-uri: http://localhost:8443/realms/superbank/protocol/openid-connect/certs
+            user-name-attribute: preferred_username
+
+
 
 eureka:
   client:
